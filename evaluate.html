@@ -1,0 +1,1110 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="utf8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="keywords" content="Family Goals">
+    <meta name="description" content="Family Goals">
+    <meta name="author" content="Family Goals">
+
+    <title>Family Goals</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/jquery-ui.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/scrolling-nav.css" rel="stylesheet">
+
+	<link rel="stylesheet" href="css/estilos.css">
+	<link href="css/select2.css" rel="stylesheet">
+	<link href="css/select2-bootstrap.min.css" rel="stylesheet">
+
+	<link rel="icon" href="images/favicon.png" sizes="32x32" type="image/png">
+	
+    <!-- jQuery -->
+    <!--<script src="../js/jquery.js"></script>-->
+	<script src="js/jquery-2.2.4.min.js"></script>
+	<script src="js/jquery.browser.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+	<script src="js/jquery-ui.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Scrolling Nav JavaScript -->
+    <script src="js/jquery.easing.min.js"></script>
+    <script src="js/scrolling-nav.js"></script>
+
+	<!--PRELOADER-->
+	<link rel="stylesheet" href="css/preloader.css" type="text/css" media="screen">
+
+<style>
+.form-control {
+	/*height: 26px;*/
+}
+.select2-result-label {
+	/*font-size: 0.7em;*/
+}
+input:invalid+span:after {
+  content: '✖';
+  padding-left: 5px;
+}
+
+input:valid+span:after {
+  content: '✓';
+  padding-left: 5px;
+}
+</style>
+
+<script language="JavaScript">
+
+$(document).ready(function() {
+
+    //Controlar el cambio de tama�o de la ventana del navegador -------------------------------- TIMELINE
+	if( /Android|webOS|iPhone|iPad|iPod|blackBerry/i.test(navigator.userAgent) == false ) { 	
+	    $(window).resize(function(event) {
+		});
+	}
+
+	//Para los 3 selectores siguientes.
+	//parametros();
+
+	//Cargar datos
+	cargaInicial();
+
+	$(".limpiar").click(function(){
+		$('.columna_oculta').removeClass("columna_vista");
+		quitarClases();
+		cargaInicial();
+
+	});
+
+	$("#validar").click(function(){
+		cargarTodo();
+	});
+
+	$('.validanumericos').keypress(function(e) {
+		if(isNaN(this.value + String.fromCharCode(e.charCode))) 
+		return false;
+	})
+	.on("cut copy paste",function(e){
+		e.preventDefault();
+	});
+
+});
+
+function cargarTodo() {
+	mostrar_cargando();
+	parametros();
+	calcular();
+}
+
+function mostrar_cargando() {
+	/*
+	$("#cuerpo").css("z-index",999999);
+	$("#cuerpo").css("background-color","rgba(0,0,0,0.5)");
+	$("#cuerpo").css("height",$(document).height());
+	$("#cuerpo_imagen").css("height","128px");
+	$(".preloader-container").css("top", $(window).height()/2 * 0.86 );
+	$("#cuerpo").css("display","block");
+	*/
+}
+
+function ocultar_cargando() {
+	/*
+	$("#cuerpo").css("z-index",-1);
+	$("#cuerpo").css("background-color","rgba(0,0,0,0.0)");
+	$("#cuerpo").css("height",0);
+	$("#cuerpo_imagen").css("height",0);
+	$("#cuerpo").css("display","none");
+	*/
+}
+
+function cargaInicial() {
+	s_idioma          = 'es';
+
+	$('#resultado_positivo').css("display","none");
+	$('#resultado_regular').css("display","none");
+	$('#resultado_negativo').css("display","none");
+
+	$('#respuesta_1').val(0,0000);
+	$('#respuesta_2').val(0);
+	$('#respuesta_3').val(0);
+	$('#respuesta_4').val(0);
+	$('#respuesta_5').val(0);
+	$('#respuesta_6').val(0);
+	$('#respuesta_7').val(0);
+	$('#respuesta_8').val(0);
+	$('#respuesta_9').val(0);
+	$('#respuesta_10').val(0);
+	$('#respuesta_11').val(0);
+	$('#respuesta_12').val(0);
+	$('#respuesta_13').val(0);
+	$('#respuesta_14').val(0);
+	$('#respuesta_15').val(0);
+	$('#respuesta_16').val(0);
+	$('#respuesta_17').val(0);
+	$('#respuesta_18').val(0);
+	$('#respuesta_19').val(0);
+	$('#respuesta_20').val(0);
+	$('#respuesta_21').val(0);
+	$('#respuesta_22').val(0);
+	$('#respuesta_23').val(0);
+
+}
+
+function quitarClases() {
+	$('#pregunta_1').removeClass("color_verde color_rojo color_amarillo");
+	$('#pregunta_2').removeClass("color_verde color_rojo color_amarillo");
+	$('#pregunta_3').removeClass("color_verde color_rojo color_amarillo");
+	$('#pregunta_4').removeClass("color_verde color_rojo color_amarillo");
+	$('#pregunta_5').removeClass("color_verde color_rojo color_amarillo");
+	$('#pregunta_6').removeClass("color_verde color_rojo color_amarillo");
+	$('#pregunta_7').removeClass("color_verde color_rojo color_amarillo");
+	$('#pregunta_8').removeClass("color_verde color_rojo color_amarillo");
+	$('#pregunta_9').removeClass("color_verde color_rojo color_amarillo");
+	$('#pregunta_10').removeClass("color_verde color_rojo color_amarillo");
+	$('#pregunta_11').removeClass("color_verde color_rojo color_amarillo");
+	$('#pregunta_12').removeClass("color_verde color_rojo color_amarillo");
+	$('#pregunta_13').removeClass("color_verde color_rojo color_amarillo");
+	$('#pregunta_14').removeClass("color_verde color_rojo color_amarillo");
+	$('#pregunta_15').removeClass("color_verde color_rojo color_amarillo");
+	$('#pregunta_16').removeClass("color_verde color_rojo color_amarillo");
+	$('#pregunta_17').removeClass("color_verde color_rojo color_amarillo");
+	$('#pregunta_18').removeClass("color_verde color_rojo color_amarillo");
+	$('#pregunta_19').removeClass("color_verde color_rojo color_amarillo");
+	$('#pregunta_20').removeClass("color_verde color_rojo color_amarillo");
+	$('#pregunta_21').removeClass("color_verde color_rojo color_amarillo");
+	$('#pregunta_22').removeClass("color_verde color_rojo color_amarillo");
+	$('#pregunta_23').removeClass("color_verde color_rojo color_amarillo");
+}
+
+function parametros() {
+	$('.columna_oculta').addClass("columna_vista");
+	quitarClases();
+
+	respuesta_1 = $('#respuesta_1').val();
+	if (respuesta_1 == null || respuesta_1 == "") { respuesta_1 = 0; }
+	media_1 = $('#media_1').val()
+
+	respuesta_2 = $('#respuesta_2').val();
+	if (respuesta_2 == null || respuesta_2 == "") { respuesta_2 = 0; }
+	media_2 = $('#media_2').val()
+
+	respuesta_3 = $('#respuesta_3').val();
+	if (respuesta_3 == null || respuesta_3 == "") { respuesta_3 = 0; }
+	media_3 = $('#media_3').val()
+
+	respuesta_4 = $('#respuesta_4').val();
+	if (respuesta_4 == null || respuesta_4 == "") { respuesta_4 = 0; }
+	media_4 = $('#media_4').val()
+
+	respuesta_5 = $('#respuesta_5').val();
+	if (respuesta_5 == null || respuesta_5 == "") { respuesta_5 = 0; }
+	media_5 = $('#media_5').val()
+
+	respuesta_6 = $('#respuesta_6').val();
+	if (respuesta_6 == null || respuesta_6 == "") { respuesta_6 = 0; }
+	media_6 = $('#media_6').val()
+
+	respuesta_7 = $('#respuesta_7').val();
+	if (respuesta_7 == null || respuesta_7 == "") { respuesta_7 = 0; }
+	media_7 = $('#media_7').val()
+
+	respuesta_8 = $('#respuesta_8').val();
+	if (respuesta_8 == null || respuesta_8 == "") { respuesta_8 = 0; }
+	media_8 = $('#media_8').val()
+
+	respuesta_9 = $('#respuesta_9').val();
+	if (respuesta_9 == null || respuesta_9 == "") { respuesta_9 = 0; }
+	media_9 = $('#media_9').val()
+
+	respuesta_10 = $('#respuesta_10').val();
+	if (respuesta_10 == null || respuesta_10 == "") { respuesta_10 = 0; }
+	media_10 = $('#media_10').val()
+
+	respuesta_11 = $('#respuesta_11').val();
+	if (respuesta_11 == null || respuesta_11 == "") { respuesta_11 = 0; }
+	media_11 = $('#media_11').val()
+
+	respuesta_12 = $('#respuesta_12').val();
+	if (respuesta_12 == null || respuesta_12 == "") { respuesta_12 = 0; }
+	media_12 = $('#media_12').val()
+
+	respuesta_13 = $('#respuesta_13').val();
+	if (respuesta_13 == null || respuesta_13 == "") { respuesta_13 = 0; }
+	media_13 = $('#media_13').val()
+
+	respuesta_14 = $('#respuesta_14').val();
+	if (respuesta_14 == null || respuesta_14 == "") { respuesta_14 = 0; }
+	media_14 = $('#media_14').val()
+
+	respuesta_15 = $('#respuesta_15').val();
+	if (respuesta_15 == null || respuesta_15 == "") { respuesta_15 = 0; }
+	media_15 = $('#media_15').val()
+
+	respuesta_16 = $('#respuesta_16').val();
+	if (respuesta_16 == null || respuesta_16 == "") { respuesta_16 = 0; }
+	media_16 = $('#media_16').val()
+
+	respuesta_17 = $('#respuesta_17').val();
+	if (respuesta_17 == null || respuesta_17 == "") { respuesta_17 = 0; }
+	media_17 = $('#media_17').val()
+
+	respuesta_18 = $('#respuesta_18').val();
+	if (respuesta_18 == null || respuesta_18 == "") { respuesta_18 = 0; }
+	media_18 = $('#media_18').val()
+
+	respuesta_19 = $('#respuesta_19').val();
+	if (respuesta_19 == null || respuesta_19 == "") { respuesta_19 = 0; }
+	media_19 = $('#media_19').val()
+
+	respuesta_20 = $('#respuesta_20').val();
+	if (respuesta_20 == null || respuesta_20 == "") { respuesta_20 = 0; }
+	media_20 = $('#media_20').val()
+
+	respuesta_21 = $('#respuesta_21').val();
+	if (respuesta_21 == null || respuesta_21 == "") { respuesta_21 = 0; }
+	media_21 = $('#media_21').val()
+
+	respuesta_22 = $('#respuesta_22').val();
+	if (respuesta_22 == null || respuesta_22 == "") { respuesta_22 = 0; }
+	media_22 = $('#media_22').val()
+
+	respuesta_23 = $('#respuesta_23').val();
+	if (respuesta_23 == null || respuesta_23 == "") { respuesta_23 = 0; }
+	media_23 = $('#media_23').val()
+
+}
+
+function calcular() {
+	media_1  = media_1.replace(',','.') * 1;
+	media_2  = media_2.replace(',','.') * 1;
+	media_3  = media_3.replace(',','.') * 1;
+	media_4  = media_4.replace(',','.') * 1;
+	media_5  = media_5.replace(',','.') * 1;
+	media_6  = media_6.replace(',','.') * 1;
+	media_7  = media_7.replace(',','.') * 1;
+	media_8  = media_8.replace(',','.') * 1;
+	media_9  = media_9.replace(',','.') * 1;
+	media_10 = media_10.replace(',','.') * 1;
+	media_11 = media_11.replace(',','.') * 1;
+	media_12 = media_12.replace(',','.') * 1;
+	media_13 = media_13.replace(',','.') * 1;
+	media_14 = media_14.replace(',','.') * 1;
+	media_15 = media_15.replace(',','.') * 1;
+	media_16 = media_16.replace(',','.') * 1;
+	media_17 = media_17.replace(',','.') * 1;
+	media_18 = media_18.replace(',','.') * 1;
+	media_19 = media_19.replace(',','.') * 1;
+	media_20 = media_20.replace(',','.') * 1;
+	media_21 = media_21.replace(',','.') * 1;
+	media_22 = media_22.replace(',','.') * 1;
+	media_23 = media_23.replace(',','.') * 1;
+
+	//respuestas = respuesta_1 + respuesta_2 + respuesta_3 + respuesta_4 + respuesta_5 + respuesta_6 + respuesta_7 + respuesta_8 + respuesta_9 + respuesta_10 + respuesta_11 + respuesta_12 + respuesta_13 + respuesta_14 + respuesta_15 + respuesta_16;
+	//medias = media_1 + media_2 + media_3 + media_4 + media_5 + media_6 + media_7 + media_8 + media_9 + media_10 + media_11 + media_12 + media_13 + media_14 + media_15 + media_16;
+
+	count_verde = 0;
+	count_amarillo = 0;
+	count_rojo = 0;
+
+	if (respuesta_1 > media_1) {
+		$('#pregunta_1').addClass("color_rojo");
+		count_rojo++;
+	} else if (respuesta_1 == media_1) {
+		$('#pregunta_1').addClass("color_amarillo");
+		count_amarillo++;
+	} else  {
+		$('#pregunta_1').addClass("color_verde");
+		count_verde++;
+	}
+
+	if (respuesta_2 > media_2) {
+		$('#pregunta_2').addClass("color_verde");
+		count_verde++;
+	} else if (respuesta_2 == media_2) {
+		$('#pregunta_2').addClass("color_amarillo");
+		count_amarillo++;
+	} else  {
+		$('#pregunta_2').addClass("color_rojo");
+		count_rojo++;
+	}
+
+	if (respuesta_3 > media_3) {
+		$('#pregunta_3').addClass("color_verde");
+		count_verde++;
+	} else if (respuesta_3 == media_3) {
+		$('#pregunta_3').addClass("color_amarillo");
+		count_amarillo++;
+	} else  {
+		$('#pregunta_3').addClass("color_rojo");
+		count_rojo++;
+	}
+
+	if (respuesta_4 > media_4) {
+		$('#pregunta_4').addClass("color_verde");
+		count_rojo++;
+	} else if (respuesta_4 == media_4) {
+		$('#pregunta_4').addClass("color_amarillo");
+		count_amarillo++;
+	} else  {
+		$('#pregunta_4').addClass("color_rojo");
+		count_verde++;
+	}
+
+	if (respuesta_5 > media_5) {
+		$('#pregunta_5').addClass("color_rojo");
+		count_verde++;
+	} else if (respuesta_5 == media_5) {
+		$('#pregunta_5').addClass("color_amarillo");
+		count_amarillo++;
+	} else  {
+		$('#pregunta_5').addClass("color_verde");
+		count_rojo++;
+	}
+
+	if (respuesta_6 > media_6) {
+		$('#pregunta_6').addClass("color_rojo");
+		count_rojo++;
+	} else if (respuesta_6 == media_6) {
+		$('#pregunta_6').addClass("color_amarillo");
+		count_amarillo++;
+	} else  {
+		$('#pregunta_6').addClass("color_verde");
+		count_verde++;
+	}
+
+	if (respuesta_7 > media_7) {
+		$('#pregunta_7').addClass("color_verde");
+		count_verde++;
+	} else if (respuesta_7 == media_7) {
+		$('#pregunta_7').addClass("color_amarillo");
+		count_amarillo++;
+	} else  {
+		$('#pregunta_7').addClass("color_rojo");
+		count_rojo++;
+	}
+
+	if (respuesta_8 > media_8) {
+		$('#pregunta_8').addClass("color_verde");
+		count_verde++;
+	} else if (respuesta_8 == media_8) {
+		$('#pregunta_8').addClass("color_amarillo");
+		count_amarillo++;
+	} else  {
+		$('#pregunta_8').addClass("color_rojo");
+		count_rojo++;
+	}
+
+	if (respuesta_9 > media_9) {
+		$('#pregunta_9').addClass("color_rojo");
+		count_rojo++;
+	} else if (respuesta_9 == media_9) {
+		$('#pregunta_9').addClass("color_amarillo");
+		count_amarillo++;
+	} else  {
+		$('#pregunta_9').addClass("color_verde");
+		count_verde++;
+	}
+
+	if (respuesta_10 > media_10) {
+		$('#pregunta_10').addClass("color_verde");
+		count_rojo++;
+	} else if (respuesta_10 == media_10) {
+		$('#pregunta_10').addClass("color_amarillo");
+		count_amarillo++;
+	} else  {
+		$('#pregunta_10').addClass("color_rojo");
+		count_verde++;
+	}
+
+	if (respuesta_11 > media_11) {
+		$('#pregunta_11').addClass("color_rojo");
+		count_rojo++;
+	} else if (respuesta_11 == media_11) {
+		$('#pregunta_11').addClass("color_amarillo");
+		count_amarillo++;
+	} else  {
+		$('#pregunta_11').addClass("color_verde");
+		count_verde++;
+	}
+
+	if (respuesta_12 > media_12) {
+		$('#pregunta_12').addClass("color_rojo");
+		count_rojo++;
+	} else if (respuesta_12 == media_12) {
+		$('#pregunta_12').addClass("color_amarillo");
+		count_amarillo++;
+	} else  {
+		$('#pregunta_12').addClass("color_verde");
+		count_verde++;
+	}
+
+	if (respuesta_13 > media_13) {
+		$('#pregunta_13').addClass("color_rojo");
+		count_rojo++;
+	} else if (respuesta_13 == media_13) {
+		$('#pregunta_13').addClass("color_amarillo");
+		count_amarillo++;
+	} else  {
+		$('#pregunta_13').addClass("color_verde");
+		count_verde++;
+	}
+
+	if (respuesta_14 > media_14) {
+		$('#pregunta_14').addClass("color_rojo");
+		count_rojo++;
+	} else if (respuesta_14 == media_14) {
+		$('#pregunta_14').addClass("color_amarillo");
+		count_amarillo++;
+	} else  {
+		$('#pregunta_14').addClass("color_verde");
+		count_verde++;
+	}
+
+	if (respuesta_15 > media_15) {
+		$('#pregunta_15').addClass("color_rojo");
+		count_rojo++;
+	} else if (respuesta_15 == media_15) {
+		$('#pregunta_15').addClass("color_amarillo");
+		count_amarillo++;
+	} else  {
+		$('#pregunta_15').addClass("color_verde");
+		count_verde++;
+	}
+
+	if (respuesta_16 > media_16) {
+		$('#pregunta_16').addClass("color_rojo");
+		count_rojo++;
+	} else if (respuesta_16 == media_16) {
+		$('#pregunta_16').addClass("color_amarillo");
+		count_amarillo++;
+	} else  {
+		$('#pregunta_16').addClass("color_verde");
+		count_verde++;
+	}
+
+	if (respuesta_17 > media_17) {
+		$('#pregunta_17').addClass("color_rojo");
+		count_rojo++;
+	} else if (respuesta_17 == media_17) {
+		$('#pregunta_17').addClass("color_amarillo");
+		count_amarillo++;
+	} else  {
+		$('#pregunta_17').addClass("color_verde");
+		count_verde++;
+	}
+
+	if (respuesta_18 > media_18) {
+		$('#pregunta_18').addClass("color_rojo");
+		count_rojo++;
+	} else if (respuesta_18 == media_18) {
+		$('#pregunta_18').addClass("color_amarillo");
+		count_amarillo++;
+	} else  {
+		$('#pregunta_18').addClass("color_verde");
+		count_verde++;
+	}
+
+	if (respuesta_19 > media_19) {
+		$('#pregunta_19').addClass("color_verde");
+		count_rojo++;
+	} else if (respuesta_19 == media_19) {
+		$('#pregunta_19').addClass("color_amarillo");
+		count_amarillo++;
+	} else  {
+		$('#pregunta_19').addClass("color_rojo");
+		count_verde++;
+	}
+
+	if (respuesta_20 > media_20) {
+		$('#pregunta_20').addClass("color_rojo");
+		count_verde++;
+	} else if (respuesta_20 == media_20) {
+		$('#pregunta_20').addClass("color_amarillo");
+		count_amarillo++;
+	} else  {
+		$('#pregunta_20').addClass("color_verde");
+		count_rojo++;
+	}
+
+	if (respuesta_21 > media_21) {
+		$('#pregunta_21').addClass("color_rojo");
+		count_verde++;
+	} else if (respuesta_21 == media_21) {
+		$('#pregunta_21').addClass("color_amarillo");
+		count_amarillo++;
+	} else  {
+		$('#pregunta_21').addClass("color_verde");
+		count_rojo++;
+	}
+
+	if (respuesta_22 > media_22) {
+		$('#pregunta_22').addClass("color_verde");
+		count_verde++;
+	} else if (respuesta_22 == media_22) {
+		$('#pregunta_22').addClass("color_amarillo");
+		count_amarillo++;
+	} else  {
+		$('#pregunta_22').addClass("color_rojo");
+		count_rojo++;
+	}
+
+	if (respuesta_23 > media_23) {
+		$('#pregunta_23').addClass("color_verde");
+		count_verde++;
+	} else if (respuesta_23 == media_23) {
+		$('#pregunta_23').addClass("color_amarillo");
+		count_amarillo++;
+	} else  {
+		$('#pregunta_23').addClass("color_rojo");
+		count_rojo++;
+	}
+
+	$('#resultado_positivo').css("display","none");
+	$('#resultado_regular').css("display","none");
+	$('#resultado_negativo').css("display","none");
+
+	if (count_verde    >= count_amarillo+count_rojo)  { 
+		$('#resultado_positivo').css("display","block"); 
+		$('html, body').animate({
+ 			scrollTop: $("#resultado_positivo").offset().top
+ 		}, 3000);
+	}
+	if (count_amarillo >= count_verde+count_rojo)     { 
+		$('#resultado_regular').css("display","block"); 
+		$('html, body').animate({
+ 			scrollTop: $("#resultado_regular").offset().top
+ 		}, 3000);
+	}
+	if (count_rojo     >= count_amarillo+count_verde) { 
+		$('#resultado_negativo').css("display","block"); 
+		$('html, body').animate({
+ 			scrollTop: $("#resultado_negativo").offset().top
+ 		}, 3000);
+	}
+
+	$('.count_verde').html(count_verde);
+	$('.count_amarillo').html(count_amarillo);
+	$('.count_rojo').html(count_rojo);
+}
+</script>
+</head>
+
+<body id="pagina" cz-shortcut-listen="true">
+
+<!--
+<div id="cuerpo" class="preloader">
+	<div class="preloader-container">
+		<div class="preloader-animation"></div>
+	</div>
+</div>
+-->
+
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" style="height: 123px;/*background-color: #14699c !important;*/ border:0;box-shadow: 0px 2px 5px #dcdcdc;">
+	<div class="container">
+		<div class="navbar-header page-scroll">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand page-scroll" href="#page-top" style="margin-left:10px;">
+                <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 banda_imagen" style="background-image: url(../image/header/banda-sostenibilidad-cabecera.png);">-->
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 banda_imagen" style="background-color: #000;">
+					<div class="container" style="padding-right: 0px;">
+						<!--<a href="#" class="textos" style="padding-top:8px;">Contacto</a>-->
+						<!--<a href="#" class="textos" style="padding-top:8px;">Nosotros</a>-->
+					</div>
+				</div>
+			</a>
+			<div class="avatar_h" style="background-image: url(images/logo-family-goals-cabecera.png)"></div>
+		</div>
+
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse navbar-ex1-collapse navbar-posicion">
+			<ul class="nav navbar-nav">
+				<li class="hidden">
+					<a class="page-scroll" href="#page-top"></a>
+				</li>
+				<li>
+					<a class="page-scroll texto_menu" href="https://familiy-goals.github.io/">Portada</a>
+				</li>
+				<!--
+				<li>
+					<a class="page-scroll texto_menu" href="../datos/index.jsp?idioma=es&filtro_param=f&funcion=">Base de datos</a>
+				</li>
+				-->
+				<li>
+					<a class="page-scroll texto_menu" href="datos.html">Base de datos</a>
+				</li>
+				<li>
+					<a class="page-scroll texto_menu" href="pdf/metodologia.pdf" target="_blank">Metodología</a>
+				</li>
+				<!--
+				<li>
+					<a class="page-scroll texto_menu" href="#glosario">Glosario</a>
+				</li>
+				<li>
+					<a class="page-scroll texto_menu" href="index_en.html">Inglés</a>
+				</li>
+				<li>
+					<a class="page-scroll texto_menu" href="index_fr.html">Francés</a>
+				</li>
+				-->
+				<li>
+					<a class="page-scroll boton_menu limpiar" href="">Evalúate</a>
+				</li>
+				<li>
+					<a class="page-scroll texto_menu" href="acerca.html">Acerca de</a>
+				</li>
+			</ul>
+		</div>
+		<!-- /.navbar-collapse -->
+	</div>
+	<!-- /.container -->
+</nav>
+
+<!-- EVALÚA tu política -->
+<section id="evalua" class="fondo_politica" style="margin-top: 25px;">
+	<div class="container">
+		<div class="row" style="padding-top:123px;padding-bottom:30px;">
+			<div class="col-lg-9 col-md-8 col-sm-8 col-xs-12" style="padding-left:18px;">
+				<div class="row">
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<p class="descripcion_politica" <="" p="">
+						</p><p class="titulo_seccion" style="color: #fff;">evalúa tu política de familia</p>
+						<p style="background-image: url(images/separador-blanco.png);height: 2px;background-repeat: no-repeat;"></p>
+					</div>
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top:40px;">
+						<p class="texto_corrido" style="color:#fff;">Comprueba el nivel de alineación de tus políticas públicas con una selección de indicadores de la Agenda 2030.</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
+				<p class="texto_corrido" style="color:#fff;">Este autotest ofrece un diagnóstico básico a partir de una selección de indicadores relacionados con las políticas de familia, y utilizados por el INE para evaluar el cumplimiento de las metas de la Agenda 2030.</p>
+				<!--<p class="texto_corrido" style="color:#fff;">Para un análisis más detallado y exhaustivo, puede contactar con nosotros.</p>-->
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- RESULTADO Positivo -->
+<section id="resultado_positivo" class="fondo_gris">
+	<div class="container">
+		<div class="row" style="padding-top:30px;padding-bottom:30px;">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-left:30px;padding-bottom:30px;">
+				<p class="titulo_seccion">política bien alineada</p>
+				<p style="background-image: url(images/separador-azul.png);height: 2px;background-repeat: no-repeat;"></p>
+			</div>
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-left:30px;">
+				<p class="texto_corrido">Su política presenta una <span style="color: green;font-weight: bold;">BUENA ALINEACIÓN</span> a la Agenda 2030 y los derechos humanos.</p>
+				<p class="texto_corrido">Del conjunto de indicadores evaluados:
+					<br>- <span class="count_verde" style="color: green;font-weight: bold;"></span> presentan un resultado mejor que el conjunto del país
+					<br>- <span class="count_amarillo" style="color: orange;font-weight: bold;"></span> presentan un resultado similar al conjunto del país
+					<br>- <span class="count_rojo" style="color: red;font-weight: bold;"></span> presentan un resultado peor que el conjunto del país
+				</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- RESULTADO Regular -->
+<section id="resultado_regular" class="fondo_gris">
+	<div class="container">
+		<div class="row" style="padding-top:30px;padding-bottom:30px;">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-left:30px;padding-bottom:30px;">
+				<p class="titulo_seccion">política alineada regular</p>
+				<p style="background-image: url(images/separador-azul.png);height: 2px;background-repeat: no-repeat;"></p>
+			</div>
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-left:30px;">
+				<p class="texto_corrido">Su política presenta una <span style="color: orange;font-weight: bold;">REGULAR ALINEACIÓN</span> a la Agenda 2030 y los derechos humanos.</p>
+				<p class="texto_corrido">Del conjunto de indicadores evaluados:
+					<br>- <span class="count_verde" style="color: green;font-weight: bold;"></span> presentan un resultado mejor que el conjunto del país
+					<br>- <span class="count_amarillo" style="color: orange;font-weight: bold;"></span> presentan un resultado similar al conjunto del país
+					<br>- <span class="count_rojo" style="color: red;font-weight: bold;"></span> presentan un resultado peor que el conjunto del país
+				</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- RESULTADO Negativo -->
+<section id="resultado_negativo" class="fondo_gris">
+	<div class="container">
+		<div class="row" style="padding-top:30px;padding-bottom:30px;">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-left:30px;padding-bottom:30px;">
+				<p class="titulo_seccion">política poco alineada</p>
+				<p style="background-image: url(images/separador-azul.png);height: 2px;background-repeat: no-repeat;"></p>
+			</div>
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-left:30px;">
+				<p class="texto_corrido">Su política presenta una <span style="color: red;font-weight: bold;">BAJA ALINEACIÓN</span> a la Agenda 2030 y los derechos humanos.</p>
+				<p class="texto_corrido">Del conjunto de indicadores evaluados:
+					<br>- <span class="count_verde" style="color: green;font-weight: bold;"></span> presentan un resultado mejor que el conjunto del país
+					<br>- <span class="count_amarillo" style="color: orange;font-weight: bold;"></span> presentan un resultado similar al conjunto del país
+					<br>- <span class="count_rojo" style="color: red;font-weight: bold;"></span> presentan un resultado peor que el conjunto del país
+				</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+
+<section id="datos" style="margin-top: 15px;">
+	<div class="container" style="padding-left: 30px;">
+		<div class="row" style="margin-top: 10px;">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<div id="formulario" style="padding-left:0px; padding-right:0px;overflow-x: auto;" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					<table style="width:100%;">
+						<tbody><tr>
+							<th class="texto_dato_formulario" style="width:70%;"></th>
+							<th class="texto_dato_formulario" style="width:15%;text-align: center;">su dato (%)</th>
+							<th class="texto_dato_formulario columna_oculta" style="width:15%;text-align: left;">media nac.(%)</th>
+						</tr>
+						
+						<tr class="linea_tabla">
+							<td id="pregunta_1" class="texto_tabla_funcion pregunta">Población en riesgo de pobreza o exclusión social: indicador AROPE (%, 2020)</td>
+							<td class="texto_tabla_resto" style="text-align: right;">
+								<!-- <input id="respuesta_1" class="fondo_dato_formulario respuesta" type="number" lang="de-DE" pattern="[0-9]+([\.,][0-9]+)?" placeholder="999,9999" step="0.0001" min="0" max="999.9999" required>-->
+								<input id="respuesta_1" class="fondo_dato_formulario respuesta" type="number" lang="de-DE" pattern="[0-9]+([\.,][0-9]+)?" step="0.0001" min="0" max="999.9999" required="">
+								<span class="validity"></span>
+							</td>
+							<td class="texto_tabla_resto columna_oculta" style="text-align: left;padding-left: 5px;">
+								<input id="media_1" type="text" value="26,4000" class="fondo_dato_formulario respuesta" onfocus="this.blur()" readonly="readonly">
+							</td>
+						</tr>
+						
+						<tr class="linea_tabla">
+							<td id="pregunta_2" class="texto_tabla_funcion pregunta">Proporción del gasto público total que se dedica a educación (%, 2019)</td>
+							<td class="texto_tabla_resto" style="text-align: right;">
+								<!-- <input id="respuesta_2" class="fondo_dato_formulario respuesta" type="number" lang="de-DE" pattern="[0-9]+([\.,][0-9]+)?" placeholder="999,9999" step="0.0001" min="0" max="999.9999" required>-->
+								<input id="respuesta_2" class="fondo_dato_formulario respuesta" type="number" lang="de-DE" pattern="[0-9]+([\.,][0-9]+)?" step="0.0001" min="0" max="999.9999" required="">
+								<span class="validity"></span>
+							</td>
+							<td class="texto_tabla_resto columna_oculta" style="text-align: left;padding-left: 5px;">
+								<input id="media_2" type="text" value="8,8300" class="fondo_dato_formulario respuesta" onfocus="this.blur()" readonly="readonly">
+							</td>
+						</tr>
+						
+						<tr class="linea_tabla">
+							<td id="pregunta_3" class="texto_tabla_funcion pregunta">Proporción del gasto público total que se dedica a salud (%, 2019)</td>
+							<td class="texto_tabla_resto" style="text-align: right;">
+								<!-- <input id="respuesta_3" class="fondo_dato_formulario respuesta" type="number" lang="de-DE" pattern="[0-9]+([\.,][0-9]+)?" placeholder="999,9999" step="0.0001" min="0" max="999.9999" required>-->
+								<input id="respuesta_3" class="fondo_dato_formulario respuesta" type="number" lang="de-DE" pattern="[0-9]+([\.,][0-9]+)?" step="0.0001" min="0" max="999.9999" required="">
+								<span class="validity"></span>
+							</td>
+							<td class="texto_tabla_resto columna_oculta" style="text-align: left;padding-left: 5px;">
+								<input id="media_3" type="text" value="15,5100" class="fondo_dato_formulario respuesta" onfocus="this.blur()" readonly="readonly">
+							</td>
+						</tr>
+						
+						<tr class="linea_tabla">
+							<td id="pregunta_4" class="texto_tabla_funcion pregunta">Proporción del gasto público total que se dedica a protección social (%, 2019)</td>
+							<td class="texto_tabla_resto" style="text-align: right;">
+								<!-- <input id="respuesta_4" class="fondo_dato_formulario respuesta" type="number" lang="de-DE" pattern="[0-9]+([\.,][0-9]+)?" placeholder="999,9999" step="0.0001" min="0" max="999.9999" required>-->
+								<input id="respuesta_4" class="fondo_dato_formulario respuesta" type="number" lang="de-DE" pattern="[0-9]+([\.,][0-9]+)?" step="0.0001" min="0" max="999.9999" required="">
+								<span class="validity"></span>
+							</td>
+							<td class="texto_tabla_resto columna_oculta" style="text-align: left;padding-left: 5px;">
+								<input id="media_4" type="text" value="42,1000" class="fondo_dato_formulario respuesta" onfocus="this.blur()" readonly="readonly">
+							</td>
+						</tr>
+						
+						<tr class="linea_tabla">
+							<td id="pregunta_5" class="texto_tabla_funcion pregunta">Tasa de mortalidad por suicidio (Tanto por 100000, 2018)</td>
+							<td class="texto_tabla_resto" style="text-align: right;">
+								<!-- <input id="respuesta_5" class="fondo_dato_formulario respuesta" type="number" lang="de-DE" pattern="[0-9]+([\.,][0-9]+)?" placeholder="999,9999" step="0.0001" min="0" max="999.9999" required>-->
+								<input id="respuesta_5" class="fondo_dato_formulario respuesta" type="number" lang="de-DE" pattern="[0-9]+([\.,][0-9]+)?" step="0.0001" min="0" max="999.9999" required="">
+								<span class="validity"></span>
+							</td>
+							<td class="texto_tabla_resto columna_oculta" style="text-align: left;padding-left: 5px;">
+								<input id="media_5" type="text" value="7,5700" class="fondo_dato_formulario respuesta" onfocus="this.blur()" readonly="readonly">
+							</td>
+						</tr>
+						
+						<tr class="linea_tabla">
+							<td id="pregunta_6" class="texto_tabla_funcion pregunta">Necesidad insatisfecha de atención médica (%, 2019)</td>
+							<td class="texto_tabla_resto" style="text-align: right;">
+								<!-- <input id="respuesta_6" class="fondo_dato_formulario respuesta" type="number" lang="de-DE" pattern="[0-9]+([\.,][0-9]+)?" placeholder="999,9999" step="0.0001" min="0" max="999.9999" required>-->
+								<input id="respuesta_6" class="fondo_dato_formulario respuesta" type="number" lang="de-DE" pattern="[0-9]+([\.,][0-9]+)?" step="0.0001" min="0" max="999.9999" required="">
+								<span class="validity"></span>
+							</td>
+							<td class="texto_tabla_resto columna_oculta" style="text-align: left;padding-left: 5px;">
+								<input id="media_6" type="text" value="0,4000" class="fondo_dato_formulario respuesta" onfocus="this.blur()" readonly="readonly">
+							</td>
+						</tr>
+						
+						<tr class="linea_tabla">
+							<td id="pregunta_7" class="texto_tabla_funcion pregunta">Proporción de adolescentes que, al final de la enseñanza secundaria inferior, han alcanzado al menos un nivel mínimo de competencia en lectura (proporción, 2018)</td>
+							<td class="texto_tabla_resto" style="text-align: right;">
+								<!-- <input id="respuesta_7" class="fondo_dato_formulario respuesta" type="number" lang="de-DE" pattern="[0-9]+([\.,][0-9]+)?" placeholder="999,9999" step="0.0001" min="0" max="999.9999" required>-->
+								<input id="respuesta_7" class="fondo_dato_formulario respuesta" type="number" lang="de-DE" pattern="[0-9]+([\.,][0-9]+)?" step="0.0001" min="0" max="999.9999" required="">
+								<span class="validity"></span>
+							</td>
+							<td class="texto_tabla_resto columna_oculta" style="text-align: left;padding-left: 5px;">
+								<input id="media_7" type="text" value="76,8000" class="fondo_dato_formulario respuesta" onfocus="this.blur()" readonly="readonly">
+							</td>
+						</tr>
+						
+						<tr class="linea_tabla">
+							<td id="pregunta_8" class="texto_tabla_funcion pregunta">Tasa de población que completa primera etapa de enseñanza secundaria - CINE 2 (población de 18 a 20 años) (%, 2019)</td>
+							<td class="texto_tabla_resto" style="text-align: right;">
+								<!-- <input id="respuesta_8" class="fondo_dato_formulario respuesta" type="number" lang="de-DE" pattern="[0-9]+([\.,][0-9]+)?" placeholder="999,9999" step="0.0001" min="0" max="999.9999" required>-->
+								<input id="respuesta_8" class="fondo_dato_formulario respuesta" type="number" lang="de-DE" pattern="[0-9]+([\.,][0-9]+)?" step="0.0001" min="0" max="999.9999" required="">
+								<span class="validity"></span>
+							</td>
+							<td class="texto_tabla_resto columna_oculta" style="text-align: left;padding-left: 5px;">
+								<input id="media_8" type="text" value="96,2000" class="fondo_dato_formulario respuesta" onfocus="this.blur()" readonly="readonly">
+							</td>
+						</tr>
+						
+						<tr class="linea_tabla">
+							<td id="pregunta_9" class="texto_tabla_funcion pregunta">Proporción de mujeres y niñas de 16 años o más que han sufrido violencia física o sexual infligida por un compañero íntimo actual o anterior en los 12 meses anteriores (%, 2019)</td>
+							<td class="texto_tabla_resto" style="text-align: right;">
+								<!-- <input id="respuesta_9" class="fondo_dato_formulario respuesta" type="number" lang="de-DE" pattern="[0-9]+([\.,][0-9]+)?" placeholder="999,9999" step="0.0001" min="0" max="999.9999" required>-->
+								<input id="respuesta_9" class="fondo_dato_formulario respuesta" type="number" lang="de-DE" pattern="[0-9]+([\.,][0-9]+)?" step="0.0001" min="0" max="999.9999" required="">
+								<span class="validity"></span>
+							</td>
+							<td class="texto_tabla_resto columna_oculta" style="text-align: left;padding-left: 5px;">
+								<input id="media_9" type="text" value="0,1900" class="fondo_dato_formulario respuesta" onfocus="this.blur()" readonly="readonly">
+							</td>
+						</tr>
+						
+						<tr class="linea_tabla">
+							<td id="pregunta_10" class="texto_tabla_funcion pregunta">Tiempo dedicado al hogar y familia en un día promedio (Minutos, 2010)</td>
+							<td class="texto_tabla_resto" style="text-align: right;">
+								<!-- <input id="respuesta_10" class="fondo_dato_formulario respuesta" type="number" lang="de-DE" pattern="[0-9]+([\.,][0-9]+)?" placeholder="999,9999" step="0.0001" min="0" max="999.9999" required>-->
+								<input id="respuesta_10" class="fondo_dato_formulario respuesta" type="number" lang="de-DE" pattern="[0-9]+([\.,][0-9]+)?" step="0.0001" min="0" max="999.9999" required="">
+								<span class="validity"></span>
+							</td>
+							<td class="texto_tabla_resto columna_oculta" style="text-align: left;padding-left: 5px;">
+								<input id="media_10" type="text" value="182,0000" class="fondo_dato_formulario respuesta" onfocus="this.blur()" readonly="readonly">
+							</td>
+						</tr>
+						
+						<tr class="linea_tabla">
+							<td id="pregunta_11" class="texto_tabla_funcion pregunta">Proporción de empleo informal, por sector y sexo (estimaciones armonizadas de la OIT) (% ,2019)</td>
+							<td class="texto_tabla_resto" style="text-align: right;">
+								<!-- <input id="respuesta_11" class="fondo_dato_formulario respuesta" type="number" lang="de-DE" pattern="[0-9]+([\.,][0-9]+)?" placeholder="999,9999" step="0.0001" min="0" max="999.9999" required>-->
+								<input id="respuesta_11" class="fondo_dato_formulario respuesta" type="number" lang="de-DE" pattern="[0-9]+([\.,][0-9]+)?" step="0.0001" min="0" max="999.9999" required="">
+								<span class="validity"></span>
+							</td>
+							<td class="texto_tabla_resto columna_oculta" style="text-align: left;padding-left: 5px;">
+								<input id="media_11" type="text" value="56,8000" class="fondo_dato_formulario respuesta" onfocus="this.blur()" readonly="readonly">
+							</td>
+						</tr>
+						
+						<tr class="linea_tabla">
+							<td id="pregunta_12" class="texto_tabla_funcion pregunta">Tasa de desempleo (15+ años) desglosada por sexo, edad y personas con discapacidad (%, 2020)</td>
+							<td class="texto_tabla_resto" style="text-align: right;">
+								<!-- <input id="respuesta_12" class="fondo_dato_formulario respuesta" type="number" lang="de-DE" pattern="[0-9]+([\.,][0-9]+)?" placeholder="999,9999" step="0.0001" min="0" max="999.9999" required>-->
+								<input id="respuesta_12" class="fondo_dato_formulario respuesta" type="number" lang="de-DE" pattern="[0-9]+([\.,][0-9]+)?" step="0.0001" min="0" max="999.9999" required="">
+								<span class="validity"></span>
+							</td>
+							<td class="texto_tabla_resto columna_oculta" style="text-align: left;padding-left: 5px;">
+								<input id="media_12" type="text" value="15,5300" class="fondo_dato_formulario respuesta" onfocus="this.blur()" readonly="readonly">
+							</td>
+						</tr>
+						
+						<tr class="linea_tabla">
+							<td id="pregunta_13" class="texto_tabla_funcion pregunta">Tasa de desempleo (15+ años) masculina</td>
+							<td class="texto_tabla_resto" style="text-align: right;">
+								<!-- <input id="respuesta_13" class="fondo_dato_formulario respuesta" type="number" lang="de-DE" pattern="[0-9]+([\.,][0-9]+)?" placeholder="999,9999" step="0.0001" min="0" max="999.9999" required>-->
+								<input id="respuesta_13" class="fondo_dato_formulario respuesta" type="number" lang="de-DE" pattern="[0-9]+([\.,][0-9]+)?" step="0.0001" min="0" max="999.9999" required="">
+								<span class="validity"></span>
+							</td>
+							<td class="texto_tabla_resto columna_oculta" style="text-align: left;padding-left: 5px;">
+								<input id="media_13" type="text" value="13,8700" class="fondo_dato_formulario respuesta" onfocus="this.blur()" readonly="readonly">
+							</td>
+						</tr>
+						
+						<tr class="linea_tabla">
+							<td id="pregunta_14" class="texto_tabla_funcion pregunta">Tasa de desempleo (15+ años) femenina</td>
+							<td class="texto_tabla_resto" style="text-align: right;">
+								<!-- <input id="respuesta_14" class="fondo_dato_formulario respuesta" type="number" lang="de-DE" pattern="[0-9]+([\.,][0-9]+)?" placeholder="999,9999" step="0.0001" min="0" max="999.9999" required>-->
+								<input id="respuesta_14" class="fondo_dato_formulario respuesta" type="number" lang="de-DE" pattern="[0-9]+([\.,][0-9]+)?" step="0.0001" min="0" max="999.9999" required="">
+								<span class="validity"></span>
+							</td>
+							<td class="texto_tabla_resto columna_oculta" style="text-align: left;padding-left: 5px;">
+								<input id="media_14" type="text" value="17,4300" class="fondo_dato_formulario respuesta" onfocus="this.blur()" readonly="readonly">
+							</td>
+						</tr>
+						
+						<tr class="linea_tabla">
+							<td id="pregunta_15" class="texto_tabla_funcion pregunta">Proporción de jóvenes (15-24 años) que no cursan estudios, empleos o formación (% ,2019)</td>
+							<td class="texto_tabla_resto" style="text-align: right;">
+								<!-- <input id="respuesta_15" class="fondo_dato_formulario respuesta" type="number" lang="de-DE" pattern="[0-9]+([\.,][0-9]+)?" placeholder="999,9999" step="0.0001" min="0" max="999.9999" required>-->
+								<input id="respuesta_15" class="fondo_dato_formulario respuesta" type="number" lang="de-DE" pattern="[0-9]+([\.,][0-9]+)?" step="0.0001" min="0" max="999.9999" required="">
+								<span class="validity"></span>
+							</td>
+							<td class="texto_tabla_resto columna_oculta" style="text-align: left;padding-left: 5px;">
+								<input id="media_15" type="text" value="13,8800" class="fondo_dato_formulario respuesta" onfocus="this.blur()" readonly="readonly">
+							</td>
+						</tr>
+						
+						<tr class="linea_tabla">
+							<td id="pregunta_16" class="texto_tabla_funcion pregunta">Proporción de personas que viven por debajo del 50% de la mediana de los ingresos (%, 2020)</td>
+							<td class="texto_tabla_resto" style="text-align: right;">
+								<!-- <input id="respuesta_16" class="fondo_dato_formulario respuesta" type="number" lang="de-DE" pattern="[0-9]+([\.,][0-9]+)?" placeholder="999,9999" step="0.0001" min="0" max="999.9999" required>-->
+								<input id="respuesta_16" class="fondo_dato_formulario respuesta" type="number" lang="de-DE" pattern="[0-9]+([\.,][0-9]+)?" step="0.0001" min="0" max="999.9999" required="">
+								<span class="validity"></span>
+							</td>
+							<td class="texto_tabla_resto columna_oculta" style="text-align: left;padding-left: 5px;">
+								<input id="media_16" type="text" value="14,6000" class="fondo_dato_formulario respuesta" onfocus="this.blur()" readonly="readonly">
+							</td>
+						</tr>
+						
+						<tr class="linea_tabla">
+							<td id="pregunta_17" class="texto_tabla_funcion pregunta">Población que vive en hogares con determinadas deficiencias en la vivienda (%, 2020)</td>
+							<td class="texto_tabla_resto" style="text-align: right;">
+								<!-- <input id="respuesta_17" class="fondo_dato_formulario respuesta" type="number" lang="de-DE" pattern="[0-9]+([\.,][0-9]+)?" placeholder="999,9999" step="0.0001" min="0" max="999.9999" required>-->
+								<input id="respuesta_17" class="fondo_dato_formulario respuesta" type="number" lang="de-DE" pattern="[0-9]+([\.,][0-9]+)?" step="0.0001" min="0" max="999.9999" required="">
+								<span class="validity"></span>
+							</td>
+							<td class="texto_tabla_resto columna_oculta" style="text-align: left;padding-left: 5px;">
+								<input id="media_17" type="text" value="19,7000" class="fondo_dato_formulario respuesta" onfocus="this.blur()" readonly="readonly">
+							</td>
+						</tr>
+						
+						<tr class="linea_tabla">
+							<td id="pregunta_18" class="texto_tabla_funcion pregunta">Total residuos peligrosos generados en la economía per cápita (Kilogramos/habitante/año, 2018)</td>
+							<td class="texto_tabla_resto" style="text-align: right;">
+								<!-- <input id="respuesta_18" class="fondo_dato_formulario respuesta" type="number" lang="de-DE" pattern="[0-9]+([\.,][0-9]+)?" placeholder="999,9999" step="0.0001" min="0" max="999.9999" required>-->
+								<input id="respuesta_18" class="fondo_dato_formulario respuesta" type="number" lang="de-DE" pattern="[0-9]+([\.,][0-9]+)?" step="0.0001" min="0" max="999.9999" required="">
+								<span class="validity"></span>
+							</td>
+							<td class="texto_tabla_resto columna_oculta" style="text-align: left;padding-left: 5px;">
+								<input id="media_18" type="text" value="70,0200" class="fondo_dato_formulario respuesta" onfocus="this.blur()" readonly="readonly">
+							</td>
+						</tr>
+						
+						<tr class="linea_tabla">
+							<td id="pregunta_19" class="texto_tabla_funcion pregunta">Porcentaje de residuos reciclados respecto del total de residuos tratados (%, 2018)</td>
+							<td class="texto_tabla_resto" style="text-align: right;">
+								<!-- <input id="respuesta_19" class="fondo_dato_formulario respuesta" type="number" lang="de-DE" pattern="[0-9]+([\.,][0-9]+)?" placeholder="999,9999" step="0.0001" min="0" max="999.9999" required>-->
+								<input id="respuesta_19" class="fondo_dato_formulario respuesta" type="number" lang="de-DE" pattern="[0-9]+([\.,][0-9]+)?" step="0.0001" min="0" max="999.9999" required="">
+								<span class="validity"></span>
+							</td>
+							<td class="texto_tabla_resto columna_oculta" style="text-align: left;padding-left: 5px;">
+								<input id="media_19" type="text" value="35,0200" class="fondo_dato_formulario respuesta" onfocus="this.blur()" readonly="readonly">
+							</td>
+						</tr>
+						
+						<tr class="linea_tabla">
+							<td id="pregunta_20" class="texto_tabla_funcion pregunta">Proporción de niños y niñas de entre 1 y 17 años que han sufrido algún castigo físico o agresión psicológica a manos de sus cuidadores en el último mes (%, 2019)</td>
+							<td class="texto_tabla_resto" style="text-align: right;">
+								<!-- <input id="respuesta_20" class="fondo_dato_formulario respuesta" type="number" lang="de-DE" pattern="[0-9]+([\.,][0-9]+)?" placeholder="999,9999" step="0.0001" min="0" max="999.9999" required>-->
+								<input id="respuesta_20" class="fondo_dato_formulario respuesta" type="number" lang="de-DE" pattern="[0-9]+([\.,][0-9]+)?" step="0.0001" min="0" max="999.9999" required="">
+								<span class="validity"></span>
+							</td>
+							<td class="texto_tabla_resto columna_oculta" style="text-align: left;padding-left: 5px;">
+								<input id="media_20" type="text" value="0,0520" class="fondo_dato_formulario respuesta" onfocus="this.blur()" readonly="readonly">
+							</td>
+						</tr>
+						
+						<tr class="linea_tabla">
+							<td id="pregunta_21" class="texto_tabla_funcion pregunta">Proporción de mujeres y hombres jóvenes de entre 18 y 29 años que sufrieron violencia sexual antes de cumplir los 18 años (%, 2019)</td>
+							<td class="texto_tabla_resto" style="text-align: right;">
+								<!-- <input id="respuesta_21" class="fondo_dato_formulario respuesta" type="number" lang="de-DE" pattern="[0-9]+([\.,][0-9]+)?" placeholder="999,9999" step="0.0001" min="0" max="999.9999" required>-->
+								<input id="respuesta_21" class="fondo_dato_formulario respuesta" type="number" lang="de-DE" pattern="[0-9]+([\.,][0-9]+)?" step="0.0001" min="0" max="999.9999" required="">
+								<span class="validity"></span>
+							</td>
+							<td class="texto_tabla_resto columna_oculta" style="text-align: left;padding-left: 5px;">
+								<input id="media_21" type="text" value="0,0690" class="fondo_dato_formulario respuesta" onfocus="this.blur()" readonly="readonly">
+							</td>
+						</tr>
+						
+						<tr class="linea_tabla">
+							<td id="pregunta_22" class="texto_tabla_funcion pregunta">Proporción de la población que se siente satisfecha con el funcionamiento de los servicios públicos (%, 2018)</td>
+							<td class="texto_tabla_resto" style="text-align: right;">
+								<!-- <input id="respuesta_22" class="fondo_dato_formulario respuesta" type="number" lang="de-DE" pattern="[0-9]+([\.,][0-9]+)?" placeholder="999,9999" step="0.0001" min="0" max="999.9999" required>-->
+								<input id="respuesta_22" class="fondo_dato_formulario respuesta" type="number" lang="de-DE" pattern="[0-9]+([\.,][0-9]+)?" step="0.0001" min="0" max="999.9999" required="">
+								<span class="validity"></span>
+							</td>
+							<td class="texto_tabla_resto columna_oculta" style="text-align: left;padding-left: 5px;">
+								<input id="media_22" type="text" value="45,5000" class="fondo_dato_formulario respuesta" onfocus="this.blur()" readonly="readonly">
+							</td>
+						</tr>
+						
+						<tr class="linea_tabla">
+							<td id="pregunta_23" class="texto_tabla_funcion pregunta">Proporción de personas entre 16 y 74 años que han utilizado Internet en los últimos tres meses (%, 2021)</td>
+							<td class="texto_tabla_resto" style="text-align: right;">
+								<!-- <input id="respuesta_23" class="fondo_dato_formulario respuesta" type="number" lang="de-DE" pattern="[0-9]+([\.,][0-9]+)?" placeholder="999,9999" step="0.0001" min="0" max="999.9999" required>-->
+								<input id="respuesta_23" class="fondo_dato_formulario respuesta" type="number" lang="de-DE" pattern="[0-9]+([\.,][0-9]+)?" step="0.0001" min="0" max="999.9999" required="">
+								<span class="validity"></span>
+							</td>
+							<td class="texto_tabla_resto columna_oculta" style="text-align: left;padding-left: 5px;">
+								<input id="media_23" type="text" value="93,9000" class="fondo_dato_formulario respuesta" onfocus="this.blur()" readonly="readonly">
+							</td>
+						</tr>
+						
+					</tbody></table>
+				</div>
+				<div class="col-xs-6 col-sm-10 col-md-10 col-lg-11" style="padding-left:0px;padding-right:0px;">
+					<button class="dt-button buttons-excel buttons-html5 boton_filtro limpiar" style="cursor:pointer;float:right; margin-right: 15px !important; margin-top: 15px;background-color: #000 !important;color: #fff !important;padding:15px !important;">
+						Limpiar
+					</button>
+				</div>
+				<div class="col-xs-6 col-sm-2 col-md-2 col-lg-1" style="padding-left:0px;padding-right:0px;">
+					<button id="validar" class="dt-button buttons-excel buttons-html5 boton_filtro" style="cursor:pointer;float:right; margin-top: 15px;background-color: #000 !important;color: #fff !important;padding:15px !important;">
+						Validar
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+
+<section id="copyright" style="margin-top: 30px;">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 banda_imagen" style="background-image: url(images/banda-sostenibilidad-pie.png);"></div>
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 banda_negra_imagen">
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-2 col-md-1 col-sm-1 col-xs-1 avatar" style="background-image: url(images/logo-pie-family-goals.png); background-position-y: 35px;"></div>
+						<div class="col-lg-7 col-md-7 col-sm-6 col-xs-4 padding-derecho">
+							<div class="row row-movil" style="text-align: left;">
+								<div class="col-lg-1 col-md-1 col-sm-1 col-xs-0"></div>
+								<!--<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 padding-derecho padding-izquierdo"><a class="page-scroll texto_menu_pie" href="../datos/index.jsp?idioma=es&filtro_param=f&funcion=">Base de datos</a></div>-->
+								<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 padding-izquierdo"><a class="page-scroll texto_menu_pie" href="../datos/index.jsp?idioma=es&amp;filtro_param=o&amp;ods=">Base de datos</a></div>
+								<div class="col-lg-4 col-md-4 col-sm-5 col-xs-12 padding-izquierdo padding-movil"><a class="page-scroll texto_menu_pie" href="../Metodología.pdf" target="_blank">Metodología</a></div>
+							</div>
+							<div class="row" style="text-align: left; padding-top: 8px;">
+								<div class="col-lg-1 col-md-1 col-sm-1 col-xs-0"></div>
+								<div class="col-lg-4 col-md-4 col-sm-5 col-xs-12 padding-izquierdo padding-movil"><a class="page-scroll texto_menu_pie" href="../acercade.jsp?idioma=es">Acerca de</a></div>
+							</div>
+						</div>
+						<div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 textos textos-movil" style="text-align: left;">Family Goals es el resultado de una alianza público-privada, basada en el ODS 17, que fomenta la transferencia de conocimiento aplicado en materia de políticas de familia, enfoque basado en derechos humanos (EBDH) y en Agenda 2030 y Objetivos de Desarrollo Sostenible.</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><hr style="border: 1px solid gray;"></div>
+					</div>
+					<div class="row" style="margin-bottom: 20px;">
+						<div class="col-lg-5 col-md-5 col-sm-5 col-xs-12" style="font-size: 11px;text-align: left;font-family: 'Decimal Light';">
+							<!--<div class="col-lg-2 col-md-2 col-sm-3 col-xs-12 padding-0">Contacto <span class="display-none" style="margin-left:8px;">|</span></div>-->
+							<div class="col-lg-2 col-md-2 col-sm-3 col-xs-12 padding-0">Aviso legal <span class="display-none" style="margin-left:8px;">|</span></div>
+							<div class="col-lg-5 col-md-5 col-sm-6 col-xs-12 padding-0 padding-movil">Política de privacidad</div>
+						</div>
+						<div class="col-lg-7 col-md-7 col-sm-7 col-xs-12 padding-movil-logos" style="text-align: right;">
+							<img src="images/logo-catedra-unesco-ur.png" style="height: 35px;cursor:pointer;" onclick="javascript:window.open('https://www.unescour.es/')"> | 
+							<img src="images/logo-eme-branding.png" style="height: 18px;cursor:pointer;" onclick="javascript:window.open('https://emebranding.es/emelab/')"> | 
+							<img src="images/logouextremadura.png" style="height: 37px;cursor:pointer;" onclick="javascript:window.open('https://www.unex.es')"> | 
+							<img src="images/logo-uic-barcelona.png" style="height: 37px;cursor:pointer;" onclick="javascript:window.open('https://www.uic.es/es')"> |
+							<img src="images/logo-fundacion.png" style="height: 60px;cursor:pointer;" onclick="javascript:window.open('https://www.joaquimmolinsfigueras.org/')"> 
+						</div>
+				</div>
+				</div>
+			</div>	
+		</div>
+	</div>
+</section>
+
+
+
+
+
+</body></html>
