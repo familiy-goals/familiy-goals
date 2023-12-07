@@ -1,0 +1,791 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="utf8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="keywords" content="Family Goals">
+    <meta name="description" content="Family Goals">
+    <meta name="author" content="Family Goals">
+
+    <title>Family Goals</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/jquery-ui.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/scrolling-nav.css" rel="stylesheet">
+
+	<link rel="stylesheet" href="css/estilos.css">
+	<link href="css/select2.css" rel="stylesheet">
+	<link href="css/select2-bootstrap.min.css" rel="stylesheet">
+
+	<link rel="icon" href="images/favicon.png" sizes="32x32" type="image/png">
+	
+    <!-- jQuery -->
+    <!--<script src="../js/jquery.js"></script>-->
+	<script src="js/jquery-2.2.4.min.js"></script>
+	<script src="js/jquery.browser.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+	<script src="js/jquery-ui.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Scrolling Nav JavaScript -->
+    <script src="js/jquery.easing.min.js"></script>
+    <script src="js/scrolling-nav.js"></script>
+
+	<script src="js/select2.min.js"></script>
+	<script src="js/select2_locale_es.js"></script>
+
+	<!--DATATABLES-->
+	<link rel="stylesheet" href="css/jquery.dataTables.min.css" type="text/css" media="screen">
+	<link rel="stylesheet" href="css/responsive.dataTables.min.css" type="text/css" media="screen">
+	<link rel="stylesheet" href="css/buttons.dataTables.min.css" type="text/css" media="screen">
+
+	<script src="js/datatables.min.js"></script>
+	<!--<script src="../datatables/js/jquery.dataTables.min.js"></script>-->
+	<script src="js/dataTables.responsive.min.js"></script>
+<!--
+	<script src="../datatables/js/plugins/dataTables.buttons.min.js"></script>
+	<script src="../datatables/js/plugins/buttons.colVis.min.js"></script>
+	<script src="../datatables/js/plugins/jszip.min.js"></script>
+	<script src="../datatables/js/plugins/pdfmake.min.js"></script>
+	<script src="../datatables/js/plugins/vfs_fonts.js"></script>
+	<script src="../datatables/js/plugins/buttons.html5.min.js"></script>
+	<script src="../datatables/js/plugins/intl.js"></script>
+	<script src="../datatables/js/plugins/numeric-comma.js"></script>
+	s<script src="../datatables/js/plugins/formatted-num.js"></script>
+	<script src="../datatables/js/plugins/any-number.js"></script>
+	<script src="../datatables/js/plugins/date-uk.js"></script>
+-->
+	<!--PRELOADER-->
+	<link rel="stylesheet" href="css/preloader.css" type="text/css" media="screen">
+
+<style>
+.form-control {
+	/*height: 26px;*/
+}
+.select2-result-label {
+	/*font-size: 0.7em;*/
+}
+.child > .dtr-details {
+	width: 100%;
+}
+</style>
+
+<script language="JavaScript">
+
+$(document).ready(function() {
+
+    //Controlar el cambio de tama�o de la ventana del navegador -------------------------------- TIMELINE
+	if( /Android|webOS|iPhone|iPad|iPod|blackBerry/i.test(navigator.userAgent) == false ) { 	
+	    $(window).resize(function(event) {
+		});
+	}
+
+	//Para los 3 selectores siguientes.
+	parametros();
+
+	//Selectores SELECT2
+	$(".selectores2").select2({ minimumResultsForSearch: '24', closeOnSelect: false });
+
+	if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) == true ) { 
+		$(".selectores2 input").prop("readonly",true);
+		//$("#s2id_campania input").prop("readonly",false);
+	}
+
+	//Cargar datos
+	filtro_param      = "o";
+	s_funcion         = "todos";
+	s_subfuncion      = "todos";
+	s_ddhh            = "todos";
+	s_instrumento     = "todos";
+	s_ods             = "todos";
+	s_ods_descripcion = "Todos";
+	obtener_funcion();
+	obtener_subfuncion();
+	obtener_ddhh();
+	obtener_instrumento();
+	obtener_ods();
+	cargarTodo();
+
+	$("#funcion").change(function(){
+		parametros();
+		obtener_subfuncion();
+		obtener_ddhh();
+		obtener_instrumento();
+		obtener_ods();
+	});
+
+	$("#subfuncion").change(function(){
+		parametros();
+		obtener_funcion();
+		obtener_ddhh();
+		obtener_instrumento();
+		obtener_ods();
+	});
+
+	$("#ddhh").change(function(){
+		parametros();
+		obtener_funcion();
+		obtener_subfuncion();
+		obtener_instrumento();
+		obtener_ods();
+	});
+
+	$("#instrumento").change(function(){
+		parametros();
+		obtener_funcion();
+		obtener_subfuncion();
+		obtener_ddhh();
+		obtener_ods();
+	});
+
+	$("#ods").change(function(){
+		parametros();
+		obtener_funcion();
+		obtener_subfuncion();
+		obtener_ddhh();
+		obtener_instrumento();
+	});
+
+	$("#filtrar").click(function(){
+		cargarTodo();
+	});
+
+});
+
+function visualizar_nu(fila) {	
+	if ($('span.nu'+fila).html() == '+')	{
+		$('.visibilidad_nu'+fila).css("display","table-cell");
+		$('span.nu'+fila).html("-");
+	} else {
+		$('.visibilidad_nu'+fila).css("display","none");
+		$('span.nu'+fila).html("+");
+	}
+}
+
+function visualizar_na(fila) {	
+	if ($('span.na'+fila).html() == '+')	{
+		$('.visibilidad_na'+fila).css("display","table-cell");
+		$('span.na'+fila).html("-");
+	} else {
+		$('.visibilidad_na'+fila).css("display","none");
+		$('span.na'+fila).html("+");
+	}
+}
+
+function obtener_funcion() {
+	$.ajax({
+			type: "POST",
+			url: "select_funcion.jsp",
+		dataType: "script",
+		   async: false,
+			data: { 
+				idioma      : s_idioma,
+				funcion     : s_funcion,
+				subfuncion  : s_subfuncion,
+				ddhh        : s_ddhh,
+				instrumento : s_instrumento,
+				ods         : s_ods
+			},
+		success: function(msg){
+			if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) == true ) { 
+				$("#s2id_funcion input").prop("readonly",false);
+			}
+			$("#s2id_funcion").css("width",'100%');
+		}
+	});
+} 
+	
+function obtener_subfuncion() {
+	$.ajax({
+			type: "POST",
+			url: "select_subfuncion.jsp",
+		dataType: "script",
+		   async: false,
+			data: { 
+				idioma      : s_idioma,
+				funcion     : s_funcion,
+				subfuncion  : s_subfuncion,
+				ddhh        : s_ddhh,
+				instrumento : s_instrumento,
+				ods         : s_ods
+			},
+		success: function(msg){
+			if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) == true ) { 
+				$("#s2id_subfuncion input").prop("readonly",false);
+			}
+			$("#s2id_subfuncion").css("width",'100%');
+		}
+	});
+} 
+	
+function obtener_ddhh() {
+	$.ajax({
+			type: "POST",
+			url: "select_ddhh.jsp",
+		dataType: "script",
+		   async: false,
+			data: { 
+				idioma      : s_idioma,
+				funcion     : s_funcion,
+				subfuncion  : s_subfuncion,
+				ddhh        : s_ddhh,
+				instrumento : s_instrumento,
+				ods         : s_ods
+			},
+		success: function(msg){
+			if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) == true ) { 
+				$("#s2id_ddhh input").prop("readonly",false);
+			}
+			$("#s2id_ddhh").css("width",'100%');
+		}
+	});
+} 
+	
+function obtener_instrumento() {
+	$.ajax({
+			type: "POST",
+			url: "select_instrumento.jsp",
+		dataType: "script",
+		   async: false,
+			data: { 
+				idioma      : s_idioma,
+				funcion     : s_funcion,
+				subfuncion  : s_subfuncion,
+				ddhh        : s_ddhh,
+				instrumento : s_instrumento,
+				ods         : s_ods
+			},
+		success: function(msg){
+			if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) == true ) { 
+				$("#s2id_instrumento input").prop("readonly",false);
+			}
+			$("#s2id_instrumento").css("width",'100%');
+		}
+	});
+} 
+	
+function obtener_ods() {
+	$.ajax({
+			type: "POST",
+			url: "select_ods.jsp",
+		dataType: "script",
+		   async: false,
+			data: { 
+				idioma      : s_idioma,
+				funcion     : s_funcion,
+				subfuncion  : s_subfuncion,
+				ddhh        : s_ddhh,
+				instrumento : s_instrumento,
+				ods         : s_ods
+			},
+		success: function(msg){
+			if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) == true ) { 
+				$("#s2id_ods input").prop("readonly",false);
+			}
+			$("#s2id_ods").css("width",'100%');
+		}
+	});
+} 
+
+function cargarTodo() {
+	mostrar_cargando();
+	parametros();
+	if(filtro_param == "f") {
+		$("#nombre_titulo").text(s_funcion);
+		if($("#nombre_titulo").text().toLowerCase() == "todos") { $("#nombre_titulo").text("base de datos"); }
+		//$("#texto_titulo").text("Esta base de datos incorpora la perspectiva de la Agenda 2030 y un enfoque de Derechos Humanos a las políticas de familia. Puede interrelacionar fácilmente las funciones y subfunciones que cumple la familia con los derechos humanos, los instrumentos universales y los ODS de la Agenda 2030.");
+		$("#texto_titulo").html('<a href="Funciones.pdf" target="_blank" style="text-decoration: underline !important;color: #1ea8c8;">Guía sobre las funciones y subfunciones de la familia</a>');
+	} else if(filtro_param == "d") {
+		$("#nombre_titulo").text(s_ddhh);
+		if($("#nombre_titulo").text().toLowerCase() == "todos") { $("#nombre_titulo").text("base de datos"); }
+		//$("#texto_titulo").text("Esta base de datos incorpora la perspectiva de la Agenda 2030 y un enfoque de Derechos Humanos a las políticas de familia. Puede interrelacionar fácilmente las funciones y subfunciones que cumple la familia con los derechos humanos, los instrumentos universales y los ODS de la Agenda 2030.");
+		$("#texto_titulo").html('<a href="Funciones.pdf" target="_blank" style="text-decoration: underline !important;color: #1ea8c8;">Guía sobre las funciones y subfunciones de la familia</a>');
+	} else {
+		$("#nombre_titulo").text(s_ods_descripcion);
+		if($("#nombre_titulo").text().toLowerCase() == "todos") { $("#nombre_titulo").text("base de datos"); }
+		//$("#texto_titulo").html("El catálogo de indicadores internacionales (Naciones Unidas) y de indicadores nacionales (INE) le permitirán evaluar el nivel de alineamiento a la Agenda 2030 de una política, un plan o una actividad de su centro gestor.<br>Este instrumento puede acompañarle en el cumplimiento de la obligación de <span style='font-weight:bold;'>medir el impacto de infancia y familia</span> en el presupuesto, en el ámbito normativo o gasto no financiero de su Administración.");
+		$("#texto_titulo").html('<a href="Funciones.pdf" target="_blank" style="text-decoration: underline !important;color: #1ea8c8;">Guía sobre las funciones y subfunciones de la familia</a>');
+	}
+	tabla_detalle();
+}
+
+function regex_escape(text) {
+	return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\$&");
+};
+
+function mostrar_cargando() {
+	/*
+	$("#cuerpo").css("z-index",999999);
+	$("#cuerpo").css("background-color","rgba(0,0,0,0.5)");
+	$("#cuerpo").css("height",$(document).height());
+	$("#cuerpo_imagen").css("height","128px");
+	$(".preloader-container").css("top", $(window).height()/2 * 0.86 );
+	$("#cuerpo").css("display","block");
+	*/
+}
+
+function ocultar_cargando() {
+	/*
+	$("#cuerpo").css("z-index",-1);
+	$("#cuerpo").css("background-color","rgba(0,0,0,0.0)");
+	$("#cuerpo").css("height",0);
+	$("#cuerpo_imagen").css("height",0);
+	$("#cuerpo").css("display","none");
+	*/
+}
+
+function parametros() {
+	s_idioma          = 'es';
+	s_funcion         = $("#funcion").select2("val");			
+	s_subfuncion      = $("#subfuncion").select2("val");			
+	s_ddhh            = $("#ddhh").select2("val");			
+	s_instrumento     = $("#instrumento").select2("val");			
+	s_ods             = $("#ods").select2("val");			
+	s_ods_descripcion = $("#ods").select2('data').text;
+}
+
+function filterColumn ( i ) {
+	var regex = '^';
+	if (startswith) {
+		regex = '^';
+	}
+	$('#listadoTable').DataTable().column( i ).search(
+		regex + $('#col'+i+'_filter').val(),
+		$('#col'+i+'_regex').prop('checked'),
+		$('#col'+i+'_smart').prop('checked')
+	).draw();
+}
+
+function tabla_detalle() {
+	var s_Url = "tabla_detalle.jsp";
+
+	$.ajax({
+			type: "POST",
+			url: s_Url,
+			data: { 
+				idioma       : s_idioma,
+				filtro_param : filtro_param,
+				funcion      : s_funcion,
+				subfuncion   : s_subfuncion,
+				ddhh         : s_ddhh,
+				instrumento  : s_instrumento,
+				ods          : s_ods
+			},
+		success: function(html){
+			$("#tabla_detalle").html(html);
+
+			var table = $('#listadoTable').DataTable({
+				//"autoWidth": true,
+				//"scrollY":        '50vh',
+				//"scrollCollapse": true,
+				"paging"         : true,
+				"info"           : true,
+				"searching"      : true,
+				"pageLength"     : 10,
+				"pagingType"     : "full_numbers",
+				"scrollCollapse" : true,
+				//"scrollX"        : true,
+				"search": {
+					"caseInsensitive": true
+				},
+				"language": {
+					"url": "../datatables/js/Spanish.json",
+					"decimal": ",",
+					"thousands": "."
+				},
+				dom: 'Bfrtip',
+				//dom: '<"top"i>Bfrtp',
+				buttons: [
+					//{ extend: 'colvis', text: 'Columnas' },            		
+					//{ extend: 'copyHtml5', text: 'Copiar', footer: false },
+					{ 
+						extend: 'pdfHtml5', 
+						orientation: 'landscape', 
+						pageSize: 'A3', 
+						footer: false, 
+						text: 'Exportar PDF', 
+						//title: '',
+					  	exportOptions: {
+							  columns: ':visible'
+						},                    
+				      	customize: function (doc) { 
+							  processDoc(doc); 
+							  processDoc_imagen(doc); 
+						}
+					},
+					{ extend: 'excelHtml5', footer: false, text: 'Exportar XLSX' }
+					//{ extend: 'csvHtml5', bom: true, footer: true }
+				],
+				//responsive: {
+				//	details: {
+				//		type: 'column'
+				//	}
+				//},
+				"columnDefs": [
+					//{ targets: 0, orderable: false, className: 'dtr-control' },
+					//{ targets: 1, orderData: [ 1, 2, 3, 4, 5 ] }, 
+					//{ targets: 2, orderData: [ 2, 1, 3, 4, 5 ] },
+					//{ targets: 3, orderData: [ 3, 1, 2, 4, 5 ] },
+					//{ targets: 4, orderData: [ 4, 1, 2, 3, 5 ] },
+					//{ targets: 5, orderData: [ 5, 1, 2, 3, 4 ] }
+					{ targets: 1, orderData: [ 0, 1, 2, 3, 4 ] }, 
+					{ targets: 2, orderData: [ 1, 0, 2, 3, 4 ] },
+					{ targets: 3, orderData: [ 2, 0, 1, 3, 4 ] },
+					{ targets: 4, orderData: [ 3, 0, 1, 2, 4 ] },
+					{ targets: 5, orderData: [ 4, 0, 1, 2, 3 ] }
+				]
+				//"order": [[0, 'asc'],[1, 'asc'],[2, 'asc'],[3, 'asc'],[4, 'asc'],[5, 'asc']]
+			});
+
+			$('a.toggle-vis').on( 'click', function (e) {
+				e.preventDefault();
+			
+				// Get the column API object
+				var column = table.column( $(this).attr('data-column') );
+			
+				// Toggle the visibility
+				column.visible( ! column.visible() );
+			} );
+
+			$('#listadoTable_filter').hide();
+
+			var table = $('#listadoTable').DataTable();
+			table.columns.adjust().draw();
+				
+			setTimeout(function(){ 
+				botonPaginacion(table, 'todo', 2);
+				//$('#listadoTable_wrapper .dt-buttons').css("display","none");
+				//$('#listadoTable_filter').css("display","none");
+				//:nth-child
+				//$("[class*= visibilidad_nu]").css("display","none");
+			}, 1000);
+
+			ocultar_cargando();	
+		}
+	});
+
+}
+
+
+function botonPaginacion(table, tipoPaginacion, posicion) {
+   
+	  if (tipoPaginacion == 'todo') {
+
+		table.button().add( posicion, {
+		  action: function ( e, dt, button, config ) {
+			dt.page.len(999).draw();
+			dt.button(posicion).remove();
+			//dt.button(posicion).addClass('buttons-ver-todos');
+			botonPaginacion(dt,'',posicion);
+		  },
+		  text: 'Ver todos'
+		});
+	  
+	  } else {
+
+		table.button().add( posicion, {
+		  action: function ( e, dt, button, config ) {
+			dt.page.len(10).draw();
+			dt.button(posicion).remove();
+			//dt.button(posicion).addClass('buttons-ver-todos');
+			botonPaginacion(dt,'todo',posicion);
+		  },
+		   text: '10 reg.'
+		});
+
+	  }
+}
+
+
+function processDoc_imagen(doc) {
+
+	doc.content.splice(1, 0, {
+		columns: [{
+		//	margin: [ 0, 0, 0, 0 ],
+		//	alignment: 'top',
+		//	image: 'data:image/jpg;base64,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',
+		//	width: 1842,
+		//	height: 20
+			// Set page margins [left,top,right,bottom] or [horizontal,vertical]
+			margin: [ 30, -60, 0, 30 ],
+			alignment: 'left',
+			image: 'data:image/jpg;base64,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',
+			width: 75,
+			height: 75
+		//}, {
+		//	margin: [100],
+		//	text: 'Family Goals',
+		//	alignment: 'center',
+		//	fontSize: 36
+		}]
+	});
+}
+
+function processDoc(doc) {
+
+	for (var i = 0; i < doc.content[1].table.body.length; i++) {
+		if (doc.content[1].table.body[i][5].text != "ODS") {
+			doc.content[1].table.body[i][5].text = doc.content[1].table.body[i][5].text.replace(/[^0-9]/g,'-').replaceAll('-------------------------------------','-');
+		}
+	}
+
+	//
+	// https://pdfmake.github.io/docs/fonts/custom-fonts-client-side/
+	//
+	// Update pdfmake's global font list, using the fonts available in
+	// the customized vfs_fonts.js file (do NOT remove the Roboto default):
+	pdfMake.fonts = {
+		Roboto: {
+			normal: 'Roboto-Regular.ttf',
+			bold: 'Roboto-Medium.ttf',
+			italics: 'Roboto-Italic.ttf',
+			bolditalics: 'Roboto-MediumItalic.ttf'
+		},
+		Hoefler: {
+			normal: 'Decimal-Medium.ttf',
+			bold: 'Decimal-Semibold.ttf'
+		}
+	};
+	// modify the PDF to use a different default font:
+	doc.defaultStyle.font = "Hoefler";
+	var i = 1;
+
+	doc.styles.title = {
+      //color: 'red',
+      fontSize: '36',
+      //background: 'blue',
+      alignment: 'center',
+    }   
+
+}
+
+</script>
+</head>
+
+<body id="pagina" cz-shortcut-listen="true">
+
+<!--
+<div id="cuerpo" class="preloader">
+	<div class="preloader-container">
+		<div class="preloader-animation"></div>
+	</div>
+</div>
+-->
+
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" style="height: 123px; background-color: #fff !important; border:0;box-shadow: 0px 2px 5px #dcdcdc;">
+	<div class="container">
+		<div class="navbar-header page-scroll">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand page-scroll" href="#page-top" style="margin-left:10px;">
+                <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 banda_imagen" style="background-image: url(../image/header/banda-sostenibilidad-cabecera.png);">-->
+				<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 banda_imagen" style="background-color: #000;">
+					<div class="container" style="padding-right: 0px;">
+						<!--<a href="#" class="textos" style="padding-top:8px;">Contacto</a>-->
+						<!--<a href="#" class="textos" style="padding-top:8px;">Nosotros</a>-->
+					</div>
+				</div>
+			</a>
+			<div class="avatar_h" style="background-image: url(images/logo-family-goals-cabecera.png)"></div>
+		</div>
+
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse navbar-ex1-collapse navbar-posicion">
+			<ul class="nav navbar-nav">
+				<li class="hidden">
+					<a class="page-scroll" href="#page-top"></a>
+				</li>
+				<li>
+					<a class="page-scroll texto_menu" href="../index.jsp?idioma=es">Portada</a>
+				</li>
+				<!--
+				<li>
+					<a class="page-scroll texto_menu" href="index.jsp?idioma=es&filtro_param=f&funcion=">Base de datos</a>
+				</li>
+				-->
+				<li>
+					<a class="page-scroll texto_menu" href="index.jsp?idioma=es&amp;filtro_param=o&amp;ods=">Base de datos</a>
+				</li>
+				<li>
+					<a class="page-scroll texto_menu" href="../Metodología.pdf" target="_blank">Metodología</a>
+				</li>
+				<!--
+				<li>
+					<a class="page-scroll texto_menu" href="#glosario">Glosario</a>
+				</li>
+				<li>
+					<a class="page-scroll texto_menu" href="index_en.html">Inglés</a>
+				</li>
+				<li>
+					<a class="page-scroll texto_menu" href="index_fr.html">Francés</a>
+				</li>
+				-->
+				<li>
+					<a class="page-scroll boton_menu" href="../formulario/index.jsp?idioma=es">Evalúate</a>
+				</li>
+				<li>
+					<a class="page-scroll texto_menu" href="../acercade.jsp?idioma=es">Acerca de</a>
+				</li>
+			</ul>
+		</div>
+		<!-- /.navbar-collapse -->
+	</div>
+	<!-- /.container -->
+</nav>
+
+<!-- FUNCIONES DE LA FAMILIA -->
+<section id="familia_ods_indicadores">
+	<div class="container" style="margin-top: 25px;margin-bottom: 0px;padding: 30px;padding-bottom: 15px;">
+		<div class="row">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 0px;">
+				<p class="titulo_seccion" id="nombre_titulo"></p>
+				<p style="background-image: url(images/separador-azul.png);height: 2px;background-repeat: no-repeat;"></p>
+			</div>
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 0px;">
+				<p id="texto_titulo" style="padding-top: 15px;"></p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section id="filtros" class="fondo_gris">
+	<div class="panel margin-negativo container" style="padding-top:30px; padding-right: 0px;  padding-bottom: 15px;margin-bottom:0;box-shadow:none;">
+	<div class="panel-body" style="padding-bottom:5px;padding-top:5px;">
+
+			<div class="row">
+
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom: 15px;">
+					<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4" style="padding-left: 0px; padding-bottom: 10px;">
+						<span class="titulo_filtro">Función</span>
+						<input id="funcion" name="funcion" class="caja_filtro">
+					</div>
+
+					<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3" style="padding-left: 0px; padding-bottom: 10px;">
+						<span class="titulo_filtro">Subfunción</span>
+						<input id="subfuncion" name="subfuncion" class="caja_filtro">
+					</div>
+
+					<div class="col-xs-12 col-sm-5 col-md-5 col-lg-5" style="padding-left: 0px; padding-bottom: 10px;">
+						<span class="titulo_filtro">Derechos humanos</span>
+						<input id="ddhh" name="ddhh" class="caja_filtro">
+					</div>
+
+				</div>
+
+			</div>
+
+			<div class="row">
+
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-bottom: 15px;">
+					<div class="col-xs-12 col-sm-7 col-md-7 col-lg-7" style="padding-left: 0px; padding-bottom: 10px;">
+						<span class="titulo_filtro">Instrumento</span>
+						<input id="instrumento" name="instrumento" class="caja_filtro">
+					</div>
+
+					<div class="col-xs-12 col-sm-5 col-md-5 col-lg-4" style="padding-left: 0px; padding-bottom: 10px;">
+						<span class="titulo_filtro">ODS</span>
+						<input id="ods" name="ods" class="caja_filtro">
+					</div>
+
+					<div class="col-xs-8 col-sm-7 col-md-7 col-lg-1" style="padding-left:0px; padding-bottom: 10px;padding-right:0px;">
+						<button id="filtrar" class="dt-button buttons-html5 boton_filtro" style="float:right; margin-top: 22px;margin-right: 0px; background-color: #000 !important;color: #fff !important;padding-top: 10px;padding-bottom: 10px;">
+							Filtrar
+						</button>
+					</div>
+
+				</div>
+
+			</div>
+
+	</div>
+	</div>
+</section>
+
+
+<section id="datos" style="margin-top: 15px;">
+	<div class="container" style="padding-left: 30px;">
+		<div class="row" style="margin-top: 10px;">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<!--
+				<div  class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="padding-left: 0px; margin-top: 5px; margin-bottom: 10px;">
+					<span style="font-size:12px; padding-left: 0px; font-weight: bold; "> (*) Ocultar/Mostrar columnas: </span>
+					<span style="cursor: pointer; font-size: 10px; font-style: italic;">
+						<a class="toggle-vis" data-column="0"> Función </a>  -  
+						<a class="toggle-vis" data-column="1"> Subfunción </a> -
+						<a class="toggle-vis" data-column="2"> Derecho Humano </a> -
+						<a class="toggle-vis" data-column="3"> Instrumento </a> -
+						<a class="toggle-vis" data-column="4"> Artículo </a> -
+						<a class="toggle-vis" data-column="5"> ODS </a>
+					</span>
+				</div>
+				-->
+				<div id="tabla_detalle" style="padding-left:0px; padding-right:0px;" class="col-xs-12 col-sm-12 col-md-12 col-lg-12"></div>
+				<!--				
+				<div style="padding-left:0px; padding-right:0px;" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 table-responsive">
+					<div id="tabla_detalle"></div>
+				</div>
+				-->
+			</div>
+		</div>
+	</div>
+</section>
+
+
+<section id="copyright" style="margin-top: 30px;">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 banda_imagen" style="background-image: url(images/banda-sostenibilidad-pie.png);"></div>
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 banda_negra_imagen">
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-2 col-md-1 col-sm-1 col-xs-1 avatar" style="background-image: url(images/logo-pie-family-goals.png); background-position-y: 35px;"></div>
+						<div class="col-lg-7 col-md-7 col-sm-6 col-xs-4 padding-derecho">
+							<div class="row row-movil" style="text-align: left;">
+								<div class="col-lg-1 col-md-1 col-sm-1 col-xs-0"></div>
+								<!--<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 padding-derecho padding-izquierdo"><a class="page-scroll texto_menu_pie" href="../datos/index.jsp?idioma=es&filtro_param=f&funcion=">Base de datos</a></div>-->
+								<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 padding-izquierdo"><a class="page-scroll texto_menu_pie" href="../datos.html">Base de datos</a></div>
+								<div class="col-lg-4 col-md-4 col-sm-5 col-xs-12 padding-izquierdo padding-movil"><a class="page-scroll texto_menu_pie" href="../Metodología.pdf" target="_blank">Metodología</a></div>
+							</div>
+							<div class="row" style="text-align: left; padding-top: 8px;">
+								<div class="col-lg-1 col-md-1 col-sm-1 col-xs-0"></div>
+								<div class="col-lg-4 col-md-4 col-sm-5 col-xs-12 padding-izquierdo padding-movil"><a class="page-scroll texto_menu_pie" href="../acercade.jsp?idioma=es">Acerca de</a></div>
+							</div>
+						</div>
+						<div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 textos textos-movil" style="text-align: left;">Family Goals es el resultado de una alianza público-privada, basada en el ODS 17, que fomenta la transferencia de conocimiento aplicado en materia de políticas de familia, enfoque basado en derechos humanos (EBDH) y en Agenda 2030 y Objetivos de Desarrollo Sostenible.</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"><hr style="border: 1px solid gray;"></div>
+					</div>
+					<div class="row" style="margin-bottom: 20px;">
+						<div class="col-lg-5 col-md-5 col-sm-5 col-xs-12" style="font-size: 11px;text-align: left;font-family: 'Decimal Light';">
+							<!--<div class="col-lg-2 col-md-2 col-sm-3 col-xs-12 padding-0">Contacto <span class="display-none" style="margin-left:8px;">|</span></div>-->
+							<div class="col-lg-2 col-md-2 col-sm-3 col-xs-12 padding-0">Aviso legal <span class="display-none" style="margin-left:8px;">|</span></div>
+							<div class="col-lg-5 col-md-5 col-sm-6 col-xs-12 padding-0 padding-movil">Política de privacidad</div>
+						</div>
+						<div class="col-lg-7 col-md-7 col-sm-7 col-xs-12 padding-movil-logos" style="text-align: right;">
+							<img src="images/logo-catedra-unesco-ur.png" style="height: 35px;cursor:pointer;" onclick="javascript:window.open('https://www.unescour.es/')"> | 
+							<img src="images/logo-eme-branding.png" style="height: 18px;cursor:pointer;" onclick="javascript:window.open('https://emebranding.es/emelab/')"> | 
+							<img src="images/logouextremadura.png" style="height: 37px;cursor:pointer;" onclick="javascript:window.open('https://www.unex.es')"> | 
+							<img src="images/logo-uic-barcelona.png" style="height: 37px;cursor:pointer;" onclick="javascript:window.open('https://www.uic.es/es')"> |
+							<img src="images/logo-fundacion.png" style="height: 60px;cursor:pointer;" onclick="javascript:window.open('https://www.joaquimmolinsfigueras.org/')"> 
+						</div>
+				</div>
+				</div>
+			</div>	
+		</div>
+	</div>
+</section>
+
+
+
+
+
+</body></html>
